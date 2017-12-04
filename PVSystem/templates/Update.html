@@ -36,12 +36,12 @@
        <!-- <table> -->
 		{% for list in key %}
       <li class="li1"/><b>PV System {{ list.0 }}</b><button class="w3-button w3-green w3-small w3-round-large"><a href="{% url 'SystemOwner:UpdateAttempt' list.0 %}">Update</a></button>
-      <p align="left">Power Rating {{ list.1 }}</p>
-      <p align="left">Module Type {{ list.2 }}</p>
-      <p align="left">Array Type {{ list.3 }}</p>
-      <p align="left">System Loss {{ list.4 }}</p>
-      <p align="left">Tilt {{ list.5 }}</p>
-      <p align="left">System Type {{ list.6 }}</p>
+      <p align="left">Power Rating 	: {{ list.1 }}</p>
+      <p align="left">Module Type 	: {{ list.2 }}</p>
+      <p align="left">Array Type 	: {{ list.3 }}</p>
+      <p align="left">System Loss 	: {{ list.4 }}</p>
+      <p align="left">Tilt 			: {{ list.5 }}</p>
+      <p align="left">System Type 	: {{ list.6 }}</p>
 
 		{% endfor %}
         <!--</table>-->

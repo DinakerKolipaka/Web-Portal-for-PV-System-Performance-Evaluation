@@ -37,14 +37,14 @@
         <form action="/SystemOwner/UpdateSystem/" method="POST">
           {% csrf_token %}
           <input type="Hidden" value= {{ key }} name="system_id">
-          <label class="label1">Module Type</label>
+		  <label class="label1">Module Type</label>
           <input type="text" name="moduletype" placeholder="Enter Module Type.." required>
 
           <label class="label1">Power Rating</label>
           <input type="text" name="powerrating" placeholder="Enter Power Rating.." required>
-
-          <label class="label1">Array Type</label>
-          <input type="text" name="arraytype" placeholder="Enter Array Type.." required>
+			
+		  <label class="label1">Array Type</label>
+          <input type="text" name="arraytype" placeholder="Enter Mount.." required>
 
           <label class="label1">System Loss</label>
           <input type="text" name="systemloss" placeholder="Enter System Loss.." required>
@@ -53,14 +53,8 @@
           <input type="text" name="tilt" placeholder="Enter Tilt.." required>
 
           <label class="label1">System Type</label>
-          <input type="text" name="systemtype" placeholder="Enter System Type.." required>
+          <input type="text" name="systemtype" placeholder="Enter System Type.."required>
 		  
-		  <label class="label1">System Location</label>
-          <select name="location">
-			<option value="1">Phoenix, Arizona</option>
-			<option value="2">Mesa, Arizona</option>
-			<option value="3">Scottsdale, Arizona</option>
-		  </select>
 		  <input type="submit" value="Update">
 		  
 		</form>

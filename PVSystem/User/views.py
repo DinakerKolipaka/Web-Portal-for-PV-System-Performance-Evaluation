@@ -59,19 +59,15 @@ def Register(request):
 def RegisterUser(request):
 
     if request.method == "POST":
-        
         fname = request.POST.get('firstname')
         lname = request.POST.get('lastname')
         emailid = request.POST.get('emailid')
         pwd = request.POST.get('password')
         utype = request.POST.get('usertype')
-
         pk_list = (fname,lname,utype,emailid,pwd)
-        
         add_user = ("INSERT INTO User (first_name, last_name, user_role, email_id, password)"
                     "VALUES (%s, %s, %s, %s, %s)")
         select_user = ("SELECT * FROM User WHERE email_id = %s")
-		
         con = pymysql.connect(host='ift540.cyhc1qzz7e7u.us-west-2.rds.amazonaws.com',
                             port = 3306,
                              user='IFT540PSP',

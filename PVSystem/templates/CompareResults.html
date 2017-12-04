@@ -34,8 +34,9 @@
 			<thead>
 				<tr>
 					<th>	Month	</th>
-					<th>Predicted Energy</th>
-					<th>Expected Energy</th>
+					<th>Predicted Energy (kWh)</th>
+					<th>Expected Energy (kWh)</th>
+					<th>Energy Ratio</th>
 					
 				</tr>
 			</thead>
@@ -44,61 +45,73 @@
 				<td>January</td>
 				<td>{{ key.0 }}</td>
 				<td>{{ key.12 }}</td>
+				<td>{{ key.24 }}</td>
 			</tr>
 			<tr>
 				<td>February</td>
 				<td>{{ key.1 }}</td>
 				<td>{{ key.13 }}</td>
+				<td>{{ key.25 }}</td>
 			</tr>
 			<tr>
 				<td>March</td>
 				<td>{{ key.2 }}</td>
 				<td>{{ key.14 }}</td>
+				<td>{{ key.26 }}</td>
 			</tr>
 			<tr>
 				<td>April</td>
 				<td>{{ key.3 }}</td>
 				<td>{{ key.15 }}</td>
+				<td>{{ key.27 }}</td>
 			</tr>
 			<tr>
 				<td>May</td>
 				<td>{{ key.4 }}</td>
 				<td>{{ key.16 }}</td>
+				<td>{{ key.28 }}</td>
 			</tr>
 			<tr>
 				<td>June</td>
 				<td>{{ key.5 }}</td>
 				<td>{{ key.17 }}</td>
+				<td>{{ key.29 }}</td>
 			</tr>
 			<tr>
 				<td>July</td>
 				<td>{{ key.6 }}</td>
 				<td>{{ key.18 }}</td>
+				<td>{{ key.30 }}</td>
 			</tr>
 			<tr>
 				<td>August</td>
 				<td>{{ key.7 }}</td>
 				<td>{{ key.19 }}</td>
+				<td>{{ key.31 }}</td>
 			</tr>
 			<tr>
 				<td>September</td>
 				<td>{{ key.8 }}</td>
 				<td>{{ key.20 }}</td>
+				<td>{{ key.32 }}</td>
 			</tr>
 			<tr>
 				<td>October</td>
 				<td>{{ key.9 }}</td>
 				<td>{{ key.21 }}</td>
+				<td>{{ key.33 }}</td>
 			</tr>
 			<tr>
 				<td>November</td>
 				<td>{{ key.10 }}</td>
 				<td>{{ key.22 }}</td>
+				<td>{{ key.34 }}</td>
 			</tr>
 			<tr>
 				<td>December</td>
 				<td>{{ key.11 }}</td>
 				<td>{{ key.23 }}</td>
+				<td>{{ key.35 }}</td>
 			</tr>
 			</tbody>
 		</table>
@@ -108,7 +121,7 @@
 		<!--code for embeding graph ends here-->
 		<h3><img class="himg2" src="{% static "images/comparisonrender.svg" %}"></h3>
 
-		<button class="w3-button w3-green w3-small w3-round-large"><a class="a3" href="{% url 'SystemOwner:DownloadResults' key.24 %}">Download Results</a></button>
+		<button class="w3-button w3-green w3-small w3-round-large"><a class="a3" href="{% url 'SystemOwner:DownloadResults' key.36 %}">Download Results</a></button>
 
 		<button class="w3-button w3-green w3-small w3-round-large>"><a class="a1" href="{% url 'SystemOwner:Owner' %}">Go Back</a></button>
 	</div>

@@ -144,8 +144,8 @@ def UpdateSystem(request):
         con.commit()
         result1 = {}
 
-    return render(request, 'SystemOwnerWelcome.html', result1)
-
+    #return render(request, 'SystemOwnerHome.html', result1)
+    return OwnerView(request)
 
 
 
@@ -317,23 +317,43 @@ def CompareResults(request, system_id):
 
     cur2.execute("select jan, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dece from Results1 where system_id = %s and etype = %s", [system_id, 'EE'])
     res2 = cur2.fetchone()
-
     monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 
     if not cur1.rowcount:
-        return render(request, 'SystemOwnerWelcome.html', {'key': 1})
+        return render(request, 'SystemOwnerHome.html', {'key': 1})
     elif not cur2.rowcount:
-        return render(request, 'SystemOwnerWelcome.html', {'key': 2})
+        return render(request, 'SystemOwnerHome.html', {'key': 2})
     else:
         y1 = list(map(float, list(res1)))
         y2 = list(map(float, list(res2)))
         comparison_graph = pg.Line()
-        comparison_graph.title = 'Comparison of Expected and Predicted Energy'
+        comparison_graph.title = 'Comparison of Expected(kWh) and Predicted Energy(kWh)'
         comparison_graph.x_labels = monthNames
         comparison_graph.add('Predicted Energy', y1)
         comparison_graph.add('Expected Energy', y2)
         comparison_graph.render_to_file('static/images/comparisonrender.svg')
-        res1 = res1 + res2
+        res3 = ['', '', '', '', '', '', '', '', '', '', '', '']
+        # res1 = list(res1)
+        # res2 = list(res2)
+        # [float(i) for i in res1]
+        # [float(i) for i in res2]
+        for i in range(0, 12):
+            if y2[i] == 0:
+                res3[i] = 0
+            else:
+                res3[i] = (y1[i])/y2[i]
+                res3[i] = round(res3[i], 2)
+        add_efficiency = ("INSERT INTO Efficiency (pvsystem_id, jan, feb, mar, apr,"
+                      " may, jun, jul, aug, sep, oct, nov, dece)"
+                      "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)")
+        eff_list = (system_id, res3[0], res3[1], res3[2], res3[3], res3[4], res3[5],
+                  res3[6], res3[7], res3[8], res3[9], res3[10], res3[11])
+        cur1.execute(add_efficiency, eff_list)
+        cur1.execute("select jan, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dece from Efficiency where pvsystem_id = %s", [system_id])
+        res3 = cur1.fetchone()
+
+        res1 = res1 + res2 + res3
+        #res1.append(res3)
         res1 = list(res1)
         res1.append(system_id)
         return render(request, 'CompareResults.html', {'key': res1})
@@ -363,10 +383,12 @@ def PE(request, system_id):
                           db='pvsystem')
 
     cur = con.cursor()
-    cur.execute("select power_rating from PvSystem where pvsystem_id = %s", [system_id])
+    cur.execute("select power_rating, module_type, array_type from PvSystem where pvsystem_id = %s", [system_id])
     result = cur.fetchone()
     cur.execute("select location_id from SystemLocation where pvsystem_id = %s", [system_id])
     loc_id = cur.fetchone()
+    # cur.execute("select a,b from GlazingCoeff where id = %s and mount = %s", [result[1], result[2]])
+    # g = cur.fetchone()
     d = wp.get_predicted_values(loc_id[0])
     Gvals = d['GHI']
     Tempvals = d['Temperature']
@@ -381,7 +403,7 @@ def PE(request, system_id):
         # Calculate the Predicted Power values using the predicted power at target conditions
         Ppredvals[i] = float(result[0]) * (Gvals[i] / Gtrc) * CFtcell
         # Convert the predicted power to energy in MWh
-        Ppredvals[i] = (Ppredvals[i] * daysCount[i] * 8) / 1000
+        Ppredvals[i] = (Ppredvals[i] * daysCount[i] * 24) / 1000
         Ppredvals[i] = round(Ppredvals[i], 3)
     p_list = (system_id, Ppredvals[0], Ppredvals[1], Ppredvals[2], Ppredvals[3], Ppredvals[4], Ppredvals[5],
               Ppredvals[6], Ppredvals[7], Ppredvals[8], Ppredvals[9], Ppredvals[10], Ppredvals[11], 'PE')
@@ -531,7 +553,7 @@ def UploadXMLtoDB(request):
         cur.execute(add_location, loc_list)
         con.commit()
 
-    return render(request, 'SystemOwnerHome.html')
+    return OwnerView(request)
 
 
 def DownloadResults(request, system_id):
