@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block body_block %}
+  <div class="jumbotron">
+    <ol>
+      {% for list in key %}
+            <li><a href="{% url 'SystemOwner:Details' list.0 %} ">System {{ list.0 }}</a>
+            <button type="submit" class="btn btn-success"><a href="{% url 'SystemOwner:EE' list.0 %} ">Calculate EE</a></button>
+            <button type="submit" class="btn btn-success"><a href="{% url 'SystemOwner:PE' list.0 %} ">Calculate PE</a></button></li>
+      {% endfor %}
+    </ol>
+      <button type="submit" name="button"><a href="#"></a>Submit</button>
+  </div>
+{% endblock %}

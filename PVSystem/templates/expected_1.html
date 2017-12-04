@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block body_block %}
+  <div class="jumbotron">
+    <ul>
+      {% for a in key %}
+        {{ a }}
+      {% endfor %}
+    </ul>
+    <input type=button value="Go Back" class="btn btn-primary"onClick="javascript:history.go(-1);">
+  </div>
+{% endblock %}

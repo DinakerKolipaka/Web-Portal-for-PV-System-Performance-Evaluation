@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="{% static "css/AddNewPVSystem.css" %}">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+</head>
+<body style="font-family:Verdana;color:#aaaaaa;">
+
+<div class="header" >
+  <h1><img class="himg" src="{% static "images/asu.png" %}">PV Module Performance Evaluation System</h1>
+</div>
+
+<div class="topnav">
+  <a href="{% url 'SystemOwner:Logout' %}">Logout</a>
+  <a href="{% url 'SystemOwner:EditView' %}">Edit Profile</a>
+  <a href="/User/About/">About Us</a>
+</div>
+
+<div style="overflow:auto">
+  <div class="menu">
+    <div class="menuitem1">Menu</div>
+    <div class="menuitem"><a class="a1" href="{% url 'SystemOwner:Owner' %}">Home</a></div>
+    <div class="menuitem"><a class="a1" href="{% url 'SystemOwner:InsertView' %}">Add New PV System</a></div>
+    <div class="menuitem"><a class="a1" href="{% url 'SystemOwner:Update' %}">Update System</a></div>
+    <div class="menuitem"><a class="a1" href="{% url 'SystemOwner:Delete' %}">Delete PV System</a></div>
+    <!--<div class="menuitem"><a class="a1" href="{% url 'SystemOwner:ProvideAccess' %}">Provide Access</a></div>-->
+  </div>
+
+  <div class="main">
+    <div class="system">
+    <h2>About Us</h2>  
+    </div>
+	<p style="text-align: justify; padding-left: 30px; padding-right: 30px">
+	The objective of the Solar PV System Performance Evaluation project is to create a common platform 
+	that would enable PV System Owners, Investors, Certification Bodies and other solar industry-related 
+	users to access and upload information about photovoltaic systems. 
+	The features of the application have been developed based on the requirements 
+	primarily gathered from industry standards documents, interviews and research papers. 
+	By providing users with useful and efficient features to exchange and access data about PV systems, 
+	the application aims to simplify the tedious processes like performance evaluation and certification of PV Systems. 
+	</p>
+	<h2>PSP Team</h2>
+	<div>
+	<h4>Dinaker Prakash Kolipaka</h4>
+	M.S. Information Technology<br>
+	Tempe, Arizona
+	</div>
+	
+  </div>
+
+</div>
+
+</body>
+</html>

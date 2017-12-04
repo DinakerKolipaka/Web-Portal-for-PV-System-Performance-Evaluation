@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+{% block body_block %}
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="{% static "css/AddNewPVSystem.css" %}">
+	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+</head>
+<body style="font-family:Verdana;color:#aaaaaa;">
+	
+<div class="header" >
+	<h1><img class="himg" src="{% static "images/asu.png" %}">PV Module Performance Evaluation System</h1>
+</div>
+
+<div class="topnav">
+	<a href="{% url 'SystemOwner:Logout' %}">Logout</a>
+	<a href="UpdateProfile.html">Edit Profile</a>
+	<a href="/User/About/">About Us</a>
+</div>
+<div style="overflow:auto">
+	<div class="menu">
+    <div class="menuitem1">Menu</div>
+    <div class="menuitem"><a class="a1" href="{% url 'SystemOwner:Owner' %}">Home</a></div>
+    <div class="menuitem"><a class="a1" href="AddNewPVSystem.html">Add New PV System</a></div>
+    <div class="menuitem"><a class="a1" href="{% url 'SystemOwner:Update' %}">Update System</a></div>
+    <div class="menuitem"><a class="a1" href="DeleteSystem.html">Delete PV System</a></div>
+    <!--<div class="menuitem"><a class="a1" href="{% url 'SystemOwner:ProvideAccess' %}">Provide Access</a></div>-->
+	</div>
+
+<div class="jumbotron">
+    <h3>Predicted energy calculation</h3>
+	<!-- <br/><br/><br/>	 -->
+	<table class="table table-striped" align="center">
+		<thead>
+			<tr>
+				<th>Month</th>
+				<th>Energy Value</th>
+			</tr>
+		</thead>
+		<tbody>
+		<tr>
+			<td>January</td>
+			<td>{{ key.0 }}</td>
+		</tr>
+		<tr>
+			<td>February</td>
+			<td>{{ key.1 }}</td>
+		</tr>
+		<tr>
+			<td>March</td>
+			<td>{{ key.2 }}</td>
+		</tr>
+		<tr>
+			<td>April</td>
+			<td>{{ key.3 }}</td>
+		</tr>
+		<tr>
+			<td>May</td>
+			<td>{{ key.4 }}</td>
+		</tr>
+		<tr>
+			<td>June</td>
+			<td>{{ key.5 }}</td>
+		</tr>
+		<tr>
+			<td>July</td>
+			<td>{{ key.6 }}</td>
+		</tr>
+		<tr>
+			<td>August</td>
+			<td>{{ key.7 }}</td>
+		</tr>
+		<tr>
+			<td>September</td>
+			<td>{{ key.8 }}</td>
+		</tr>
+		<tr>
+			<td>October</td>
+			<td>{{ key.9 }}</td>
+		</tr>
+		<tr>
+			<td>November</td>
+			<td>{{ key.10 }}</td>
+		</tr>
+		<tr>
+			<td>December</td>
+			<td>{{ key.11 }}</td>
+		</tr>
+		</tbody>
+	</table>
+	<!--<input type=button value="Go Back" class="btn btn-primary"onClick="javascript:history.go(-1);">-->
+</div>
+</br>
+<button class="w3-button w3-green w3-small w3-round-large" onClick="javascript:history.go(-1);"><a href = "#">Go Back</a></button>
+    	
+<!--
+    <form action="/SystemOwner/DownloadPredResults/" method="POST">
+        {% csrf_token %}
+        <label class="label1">Download XML File</label>
+        <input type="submit" value="Download Results">
+
+    </form>
+
+-->
+</div>
+</body>
+</html>
+
+{% endblock %}

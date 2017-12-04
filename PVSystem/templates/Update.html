@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="{% static "css/SystemOwnerHome.css" %}"/>
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+</head>
+<body style="font-family:Verdana;color:#aaaaaa;">
+
+<div class="header">
+  <h1><img class="himg" src="{% static "images/asu.png" %}">PV Module Performance Evaluation System</h1>
+</div>
+
+<div class="topnav">
+  <a href="{% url 'SystemOwner:Logout' %}">Logout</a>
+  <a href="{% url 'SystemOwner:EditView' %}">Edit Profile</a>
+  <a href="/User/About/">About Us</a>
+</div>
+
+<div style="overflow:auto">
+  <div class="menu">
+    <div class="menuitem1">Menu</div>
+    <div class="menuitem"><a class="a1" href="{% url 'SystemOwner:Owner' %}">Home</a></div>
+    <div class="menuitem"><a class="a1" href="{% url 'SystemOwner:InsertView' %}">Add New PV System</a></div>
+    <div class="menuitem"><a class="a1" href="{% url 'SystemOwner:Update' %}">Update System</a></div>
+    <div class="menuitem"><a class="a1" href="{% url 'SystemOwner:Delete' %}">Delete PV System</a></div>
+    <!--<div class="menuitem"><a class="a1" href="{% url 'SystemOwner:ProvideAccess' %}">Provide Access</a></div>-->
+  </div>
+
+  <div class="main">
+    <div class="system">
+      <h3>Welcome System Owner</h3>
+      <h4>Select the PV System you want to Update</h4>
+      <table>
+       <!-- <table> -->
+		{% for list in key %}
+      <li class="li1"/><b>PV System {{ list.0 }}</b><button class="w3-button w3-green w3-small w3-round-large"><a href="{% url 'SystemOwner:UpdateAttempt' list.0 %}">Update</a></button>
+      <p align="left">Power Rating {{ list.1 }}</p>
+      <p align="left">Module Type {{ list.2 }}</p>
+      <p align="left">Array Type {{ list.3 }}</p>
+      <p align="left">System Loss {{ list.4 }}</p>
+      <p align="left">Tilt {{ list.5 }}</p>
+      <p align="left">System Type {{ list.6 }}</p>
+
+		{% endfor %}
+        <!--</table>-->
+      </table>
+    </div>
+  </div>
+
+</div>
+
+
+</body>
+</html>

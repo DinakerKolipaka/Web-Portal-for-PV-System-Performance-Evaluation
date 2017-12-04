@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="{% static "css/AddNewPVSystem.css" %}">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+</head>
+<body style="font-family:Verdana;color:#aaaaaa;">
+
+<div class="header" >
+  <h1><img class="himg" src="{% static "images/asu.png" %}">PV Module Performance Evaluation System</h1>
+</div>
+
+<div class="topnav">
+  <a href="{% url 'SystemOwner:Logout' %}">Logout</a>
+  <a href="{% url 'SystemOwner:EditView' %}">Edit Profile</a>
+  <a href="/User/About/">About Us</a>
+</div>
+
+<div style="overflow:auto">
+  <div class="menu">
+    <div class="menuitem1">Menu</div>
+    <div class="menuitem"><a class="a1" href="{% url 'SystemOwner:Owner' %}">Home</a></div>
+    <div class="menuitem"><a class="a1" href="{% url 'SystemOwner:InsertView' %}">Add New PV System</a></div>
+    <div class="menuitem"><a class="a1" href="{% url 'SystemOwner:Update' %}">Update System</a></div>
+    <div class="menuitem"><a class="a1" href="{% url 'SystemOwner:Delete' %}">Delete PV System</a></div>
+    <!--<div class="menuitem"><a class="a1" href="{% url 'SystemOwner:ProvideAccess' %}">Provide Access</a></div>-->
+  </div>
+
+  <div class="main">
+    <div class="system">
+      <h3>Add New PV System</h3>
+      <div class="form">
+        <div class="text">Enter Below Details to Register a New PV System</div>
+        <br>
+        <form action="/SystemOwner/insertPV/" method="POST">
+          {% csrf_token %}
+          {% if key == 1 %}
+            <h6>Registered Successfully</h6>
+          {% endif %}
+          <label class="label1">Module Type</label>
+          <input type="text" name="moduletype" placeholder="Enter Module Type.." required>
+
+          <label class="label1">Power Rating</label>
+          <input type="text" name="powerrating" placeholder="Enter Power Rating.." required>
+
+          <label class="label1">Array Type</label>
+          <input type="text" name="arraytype" placeholder="Enter Array Type.." required>
+
+          <label class="label1">System Loss</label>
+          <input type="text" name="systemloss" placeholder="Enter System Loss.." required>
+
+          <label class="label1">Tilt</label>
+          <input type="text" name="tilt" placeholder="Enter Tilt.." required>
+
+          <label class="label1">System Type</label>
+          <input type="text" name="systemtype" placeholder="Enter System Type.."required>
+		  
+		  <label class="label1">System Location</label>
+          <select name="location">
+			<option value="1">Phoenix, Arizona</option>
+			<option value="2">Mesa, Arizona</option>
+			<option value="3">Scottsdale, Arizona</option>
+		  </select>
+		  <input type="submit" value="Register">
+		  Or
+		  
+		  <button><a class = "a3" href= "{% url 'SystemOwner:UploadXML' %}">Upload XML</a></button>
+		  
+		</form>
+		
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

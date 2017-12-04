@@ -1,0 +1,132 @@
+* {
+  box-sizing: border-box;
+  color: black;
+}
+.body {
+  height: 100%;
+}
+.menu {
+  float:left;
+  width:20%;
+  text-align:left;
+  background-color:#e5e5e5;
+  margin-left: 10px;
+  border: 1px solid black;
+}
+.menuitem {
+  margin-left: 0px;
+  padding: 10px;
+  text-decoration: none;
+}
+.menuitem:hover {
+    background-color: #41ad63;
+}
+
+.menuitem1 {
+  text-align: center;
+  background-color:#41ad63;
+  padding:8px;
+  font-size: 1.3em;
+  color: white;
+  border-bottom: 1px solid black;
+}
+.a1,a {
+  text-decoration: none;
+}
+.header {
+    background-color: #f1f1f1;
+    text-align: center;
+    padding: 15px;
+    margin-left: -15px;
+    margin-top: -25px;
+    margin-bottom: -10px;
+}
+
+.himg {
+  float: left;
+  width: 123px;
+}
+
+/* Style the top navigation bar */
+.topnav {
+    overflow: hidden;
+    background-color: #333;
+    margin-bottom: 10px;
+}
+
+/* Style the topnav links */
+.topnav a {
+    float: right;
+    display: block;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+/* Change color on hover */
+.topnav a:hover {
+    background-color: #ddd;
+    color: black;
+}
+.main {
+  float:left;
+  width:69%;
+  padding:0 10px;
+  text-align: center;
+  margin-left: 5%;
+  margin-bottom: .5%;
+}
+.system {
+  background-color:white;
+  padding:10px 20px;
+  padding-bottom: 5.8%;
+}
+.system .a2:hover {
+    background-color: #41ad63;
+    width:13%;
+    padding:7px 7px;
+    color: black;
+}
+.w3-button {
+  width:33%;
+  padding: 7px 7px;
+  float: right;
+  margin-right: 270px;
+}
+
+.li1 {
+  padding-top: 15px;
+  padding-bottom: 15px;
+  margin-bottom: 6px;
+  text-align: left;
+  border-bottom: 1px solid black;
+}
+/*
+.right {
+  background-color:#e5e5e5;
+  float:right;
+  width:18%;
+  padding:15px;
+  text-align:center;
+  margin-right: 13px;
+}
+*/
+.footerbar {
+  position: fixed;
+ left: 0;
+ bottom: 0;
+ margin-top: 20px;
+ width: 100%;
+ height: 80px;
+ background-color: #e5e5e5;
+ color: black;
+ text-align: center;
+ border-top: 3px solid black;
+}
+@media only screen and (max-width:620px) {
+  /* For mobile phones: */
+  .menu, .main, .right {
+    width:100%;
+  }
+}

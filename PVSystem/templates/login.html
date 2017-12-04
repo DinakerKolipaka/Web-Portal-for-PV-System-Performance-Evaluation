@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="{% static "css/login.css" %}">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+</head>
+<body style="font-family:Verdana;color:#aaaaaa;">
+
+<div class="header">
+  <h1><img class="himg" src="{% static "images/asu.png" %}">PV Module Performance Evaluation System</h1>
+</div>
+
+<div class="topnav">
+  <a href="{% url 'User:Login' %}">Login</a>
+  <a href="{% url 'User:Register' %}">Register</a>
+</div>
+
+<div class="form">
+  <h3>Enter Below Details To Login</h3>
+  {% if key == 1 %}
+    <h6>Wrong Username Or Password</h6>
+  {% endif %}
+  <form action="/User/LoginAttempt/" method="POST">
+      {% csrf_token %}
+      <label for="email" class="label1">Email</label>
+      <input type="email" id="email" name="emailid" placeholder="Your Email id.." required pattern = "^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$">
+
+      <label for="password" class="label1">Password</label>
+      <input type="password" id="psw" name="password" placeholder="Enter Password.." required>
+
+    <input type="submit" value="Login">
+  </form>
+</div>
+
+</body>
+
+
+</body>
+</html>

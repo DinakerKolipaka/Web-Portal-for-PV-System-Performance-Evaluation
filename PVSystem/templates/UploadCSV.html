@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="{% static "css/AddNewPVSystem.css" %}">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+</head>
+<body style="font-family:Verdana;color:#aaaaaa;">
+
+<div class="header" >
+  <h1><img class="himg" src="{% static "images/asu.png" %}">PV Module Performance Evaluation System</h1>
+</div>
+
+<div class="topnav">
+  <a href="{% url 'SystemOwner:Logout' %}">Logout</a>
+  <a href="{% url 'SystemOwner:EditView' %}">Edit Profile</a>
+  <a href="/User/About/">About Us</a>
+</div>
+
+<div style="overflow:auto">
+  <div class="menu">
+    <div class="menuitem1">Menu</div>
+    <div class="menuitem"><a class="a1" href="{% url 'SystemOwner:Owner' %}">Home</a></div>
+    <div class="menuitem"><a class="a1" href="{% url 'SystemOwner:InsertView' %}">Add New PV System</a></div>
+    <div class="menuitem"><a class="a1" href="{% url 'SystemOwner:Update' %}">Update System</a></div>
+    <div class="menuitem"><a class="a1" href="{% url 'SystemOwner:Delete' %}">Delete PV System</a></div>
+    <!--<div class="menuitem"><a class="a1" href="{% url 'SystemOwner:ProvideAccess' %}">Provide Access</a></div>-->
+  </div>
+
+  <div class="main">
+    <div class="system">
+      <h3>Upload the CSV file</h3>
+      <div class="form">
+
+        <form action="/SystemOwner/CalculateEE/" method="POST" enctype="multipart/form-data">
+          {% csrf_token %}
+          <label class="label1">Weather CSV File</label>
+          <input type="file" name="csv_file" placeholder="Select the CSV file">
+
+          <input type="submit" value="Upload">
+
+        </form>
+
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
