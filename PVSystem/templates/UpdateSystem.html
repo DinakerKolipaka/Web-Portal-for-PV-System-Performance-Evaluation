@@ -38,13 +38,23 @@
           {% csrf_token %}
           <input type="Hidden" value= {{ key }} name="system_id">
 		  <label class="label1">Module Type</label>
-          <input type="text" name="moduletype" placeholder="Enter Module Type.." required>
-
+          <!--<input type="text" name="moduletype" placeholder="Enter Module Type.." required>-->
+		  <select name="moduletype">
+			<option value="1">Glass/cell/glass</option>
+			<option value="2">Glass/cell/polymer sheet</option>
+			<option value="3">Polymer/thin-film/steel</option>
+		  </select>
+		  
           <label class="label1">Power Rating</label>
           <input type="text" name="powerrating" placeholder="Enter Power Rating.." required>
 			
 		  <label class="label1">Array Type</label>
-          <input type="text" name="arraytype" placeholder="Enter Mount.." required>
+		  <select name="arraytype">
+			<option value="1">Open rack</option>
+			<option value="2">Close roof mount</option>
+			<option value="3">Insulated back</option>
+		  </select>
+          <!--<input type="text" name="arraytype" placeholder="Enter Mount.." required>-->
 
           <label class="label1">System Loss</label>
           <input type="text" name="systemloss" placeholder="Enter System Loss.." required>

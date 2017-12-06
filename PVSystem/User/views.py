@@ -17,7 +17,22 @@ def RedirectSplash(request):
 
 def About(request):
     d_dict = {}
-    return render(request,'aboutus.html',d_dict)
+    userid = request.session.get('userid')
+    con = pymysql.connect(host='ift540.cyhc1qzz7e7u.us-west-2.rds.amazonaws.com',
+                          port=3306,
+                          user='IFT540PSP',
+                          password='IFT540PSP',
+                          db='pvsystem')
+
+    cur = con.cursor()
+    cur.execute("select user_role from User where user_id = %s", [userid])
+    result = cur.fetchone()
+
+    if result[0] == "Lab":
+        return render(request, 'Lababoutus.html', d_dict)
+    else:
+        return render(request, 'aboutus.html', d_dict)
+
 
 def Login(request):
     d_dict = {}
@@ -48,9 +63,12 @@ def LoginAttempt(request):
         else:
             #saving userid in session
             request.session['userid'] = row[0]
-            result1 = {'key':row[0]}
-            return views.OwnerView(request)
-            #return render(request,'SystemOwnerWelcome.html',result1)
+            if row[3] == "Owner":
+                result1 = {'key':row[0]}
+                return views.OwnerView(request)
+                #return render(request,'SystemOwnerWelcome.html',result1)
+            else:
+                return views.LabView(request)
 
 def Register(request):
     d_dict = {}
@@ -86,3 +104,14 @@ def RegisterUser(request):
             con.commit()
             result1 = {}
             return render(request,'login.html',result1)
+               
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        

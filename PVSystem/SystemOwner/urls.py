@@ -24,5 +24,8 @@ urlpatterns = [
     url(r'^UpdateSystem/$',views.UpdateSystem,name='UpdateSystem'),
     url(r'^DeleteAttempt/(?P<system_id>[0-9]+)/$',views.DeleteAttempt,name='DeleteAttempt'),
     url(r'^GetLocation/$',views.getLocation,name='getLocation'),
-    url(r'^ProvideAccess/$',views.ProvideAccess,name='ProvideAccess')
+    url(r'^ProvideAccess/$',views.ProvideAccess,name='ProvideAccess'),
+    url(r'^UploadResultCSV/(?P<system_id>[0-9]+)/$',views.UploadResultCSV,name='UploadResultCSV'),
+    url(r'^ActualE/$',views.ActualE,name='ActualE'),
+    url(r'^LabView/$',views.LabView,name='LabView'),
 ]

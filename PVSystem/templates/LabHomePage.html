@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="{% static "css/LabHomePage.css" %}"/>
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+</head>
+<body style="font-family:Verdana;color:#aaaaaa;">
+
+<div class="header" >
+  <h1><img class="himg" src="asu.png">PV Module Performance Evaluation System</h1>
+</div>
+
+<div class="topnav">
+  <a href="{% url 'SystemOwner:Logout' %}">Logout</a>
+  <a href="{% url 'SystemOwner:EditView' %}">Edit Profile</a>
+  <a href="/User/About/">About Us</a>
+</div>
+
+<div style="overflow:auto">
+
+  <div class="main">
+    <div class="system">
+      <h3>Welcome Lab</h3>
+      <h4>Below Are The PV Systems you can access</h4>
+      <ol>
+        {% for list in key %}
+            <li class="li1">PV System {{ list.0 }}<button class="w3-button w3-green w3-small w3-round-large"><a href="{% url 'SystemOwner:UploadResultCSV' list.0 %}">Upload Actual Results</a></button></li>
+        {% endfor %}
+        </ol>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

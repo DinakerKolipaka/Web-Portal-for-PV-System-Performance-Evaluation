@@ -141,6 +141,18 @@ def UpdateSystem(request):
 
         cur = con.cursor()
         cur.execute(update_pvsystem, pk_list)
+        # cur.execute("select result_id from Results1 where system_id = %s", [system_id])
+        # temp = cur.fetcha()
+        # list1 = []
+        # for row in temp:
+        #     # date_dict = { i:row }
+        #     list1.append(row)
+        # #list1 = list(map(int, list1))
+        # if cur.rowcount:
+        #     for r in list1:
+        #         r = int(r)
+        #         cur.execute("Delete from Results1 where result_id = %d", [r])
+
         con.commit()
         result1 = {}
 
@@ -148,8 +160,8 @@ def UpdateSystem(request):
     return OwnerView(request)
 
 
-
 def Delete(request):
+
     con = pymysql.connect(host='ift540.cyhc1qzz7e7u.us-west-2.rds.amazonaws.com',
                           port=3306,
                           user='IFT540PSP',
@@ -173,6 +185,7 @@ def Delete(request):
 
 
 def DeleteAttempt(request, system_id):
+
     con = pymysql.connect(host='ift540.cyhc1qzz7e7u.us-west-2.rds.amazonaws.com',
                           port=3306,
                           user='IFT540PSP',
@@ -189,6 +202,7 @@ def DeleteAttempt(request, system_id):
 
 
 def EE(request, system_id):
+
     request.session['systemid'] = system_id
 
     result = {}
@@ -200,10 +214,7 @@ def EE(request, system_id):
 def CalculateEE(request):
     result = {}
     monthlyvalue = [0 for i in range(12)]
-
-
     if request.method == "POST":
-
         julianDay = 1
         numberInput = 0
         ambientAvg = 0
@@ -214,14 +225,11 @@ def CalculateEE(request):
         expectedEnergyArrMonthlySum = []
         expectedEnergyArrMonthlycount = []
         daysCount = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
-
         csv_file = request.FILES["csv_file"]
         file_data = csv_file.read()
         lines = file_data.splitlines()  # ("\n")
         k = 0
-
         for line in lines:
-
             if (k == 0):
                 k += 1
                 continue
@@ -303,6 +311,7 @@ def CalculateEE(request):
         return render(request, 'expectedview.html', result)
 
 def CompareResults(request, system_id):
+
     con = pymysql.connect(host='ift540.cyhc1qzz7e7u.us-west-2.rds.amazonaws.com',
                           port=3306,
                           user='IFT540PSP',
@@ -311,6 +320,7 @@ def CompareResults(request, system_id):
 
     cur1 = con.cursor()
     cur2 = con.cursor()
+    cur3 = con.cursor()
     x = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
     cur1.execute("select jan, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dece from Results1 where system_id = %s and etype = %s", [system_id, 'PE'])
     res1 = cur1.fetchone()
@@ -320,45 +330,91 @@ def CompareResults(request, system_id):
     monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 
     if not cur1.rowcount:
-        return render(request, 'SystemOwnerHome.html', {'key': 1})
+        return render(request, 'SystemOwnerWelcome.html', {'key': 1})
     elif not cur2.rowcount:
-        return render(request, 'SystemOwnerHome.html', {'key': 2})
+        return render(request, 'SystemOwnerWelcome.html', {'key': 2})
     else:
-        y1 = list(map(float, list(res1)))
-        y2 = list(map(float, list(res2)))
-        comparison_graph = pg.Line()
-        comparison_graph.title = 'Comparison of Expected(kWh) and Predicted Energy(kWh)'
-        comparison_graph.x_labels = monthNames
-        comparison_graph.add('Predicted Energy', y1)
-        comparison_graph.add('Expected Energy', y2)
-        comparison_graph.render_to_file('static/images/comparisonrender.svg')
-        res3 = ['', '', '', '', '', '', '', '', '', '', '', '']
-        # res1 = list(res1)
-        # res2 = list(res2)
-        # [float(i) for i in res1]
-        # [float(i) for i in res2]
-        for i in range(0, 12):
-            if y2[i] == 0:
-                res3[i] = 0
-            else:
-                res3[i] = (y1[i])/y2[i]
-                res3[i] = round(res3[i], 2)
-        add_efficiency = ("INSERT INTO Efficiency (pvsystem_id, jan, feb, mar, apr,"
-                      " may, jun, jul, aug, sep, oct, nov, dece)"
-                      "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)")
-        eff_list = (system_id, res3[0], res3[1], res3[2], res3[3], res3[4], res3[5],
-                  res3[6], res3[7], res3[8], res3[9], res3[10], res3[11])
-        cur1.execute(add_efficiency, eff_list)
-        cur1.execute("select jan, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dece from Efficiency where pvsystem_id = %s", [system_id])
-        res3 = cur1.fetchone()
+        cur3.execute(
+            "select jan, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dece from Results1 where system_id = %s and etype = %s",
+            [system_id, 'AE'])
+        res3 = cur3.fetchone()
+        if not cur3.rowcount:
+            y1 = list(map(float, list(res1)))
+            y2 = list(map(float, list(res2)))
+            comparison_graph = pg.Line()
+            comparison_graph.title = 'Comparison of Expected(kWh) and Predicted Energy(kWh)'
+            comparison_graph.x_labels = monthNames
+            comparison_graph.add('Predicted Energy', y1)
+            comparison_graph.add('Expected Energy', y2)
+            comparison_graph.render_to_file('static/images/comparisonrender.svg')
+            res3 = ['', '', '', '', '', '', '', '', '', '', '', '']
+            # res1 = list(res1)
+            # res2 = list(res2)
+            # [float(i) for i in res1]
+            # [float(i) for i in res2]
+            for i in range(0, 12):
+                if y2[i] == 0:
+                    res3[i] = 0
+                else:
+                    res3[i] = (y1[i])/y2[i]
+                    res3[i] = round(res3[i], 2)
+            add_efficiency = ("INSERT INTO Efficiency (pvsystem_id, jan, feb, mar, apr,"
+                          " may, jun, jul, aug, sep, oct, nov, dece)"
+                          "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)")
+            eff_list = (system_id, res3[0], res3[1], res3[2], res3[3], res3[4], res3[5],
+                      res3[6], res3[7], res3[8], res3[9], res3[10], res3[11])
+            cur1.execute(add_efficiency, eff_list)
+            cur1.execute("select jan, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dece from Efficiency where pvsystem_id = %s", [system_id])
+            res3 = cur1.fetchone()
 
-        res1 = res1 + res2 + res3
-        #res1.append(res3)
-        res1 = list(res1)
-        res1.append(system_id)
-        return render(request, 'CompareResults.html', {'key': res1})
+            res1 = res1 + res2 + res3
+            #res1.append(res3)
+            res1 = list(res1)
+            res1.append(system_id)
+            res1.append(1)
+            return render(request, 'CompareResults1.html', {'key': res1})
+        else:
+            y1 = list(map(float, list(res1)))
+            y2 = list(map(float, list(res2)))
+            y3 = list(map(float, list(res3)))
+            comparison_graph = pg.Line()
+            comparison_graph.title = 'Expected(kWh) vs Predicted Energy(kWh) vs Measured Energy(kWh)'
+            comparison_graph.x_labels = monthNames
+            comparison_graph.add('Predicted Energy', y1)
+            comparison_graph.add('Expected Energy', y2)
+            comparison_graph.add('Measured Energy', y3)
+            comparison_graph.render_to_file('static/images/comparisonrender.svg')
+            res4 = ['', '', '', '', '', '', '', '', '', '', '', '']
+            # res1 = list(res1)
+            # res2 = list(res2)
+            # [float(i) for i in res1]
+            # [float(i) for i in res2]
+            for i in range(0, 12):
+                if y2[i] == 0:
+                    res4[i] = 0
+                else:
+                    res4[i] = (y1[i]) / y2[i]
+                    res4[i] = round(res4[i], 2)
+            add_efficiency = ("INSERT INTO Efficiency (pvsystem_id, jan, feb, mar, apr,"
+                              " may, jun, jul, aug, sep, oct, nov, dece)"
+                              "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)")
+            eff_list = (system_id, res4[0], res4[1], res4[2], res4[3], res4[4], res4[5],
+                        res4[6], res4[7], res4[8], res4[9], res4[10], res4[11])
+            cur1.execute(add_efficiency, eff_list)
+            cur1.execute(
+                "select jan, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dece from Efficiency where pvsystem_id = %s", [system_id])
+            res4 = cur1.fetchone()
+
+            res1 = res1 + res2 + res3 +  res4
+            # res1.append(res3)
+            res1 = list(res1)
+            res1.append(system_id)
+            res1.append(1)
+            return render(request, 'CompareResults2.html', {'key': res1})
+
 
 def getLocation(request):
+
     print("Hello")
     if request.method == "POST":
         state = request.POST.get("state")
@@ -367,12 +423,13 @@ def getLocation(request):
 
 
 def PE(request, system_id):
+
     print(system_id)
     # Set the constant values used in calculations
     Ttrc = 20
     Gtrc = 1000
-    a = -3.47
-    b = -0.0594
+    # a = -3.47
+    # b = -0.0594
     dTcond = 3
     Ppredvals = [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ']
     daysCount = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
@@ -385,6 +442,14 @@ def PE(request, system_id):
     cur = con.cursor()
     cur.execute("select power_rating, module_type, array_type from PvSystem where pvsystem_id = %s", [system_id])
     result = cur.fetchone()
+    cur.execute("select a,b from GlazingCoeff where module_type = %s and array_type = %s", [result[1], result[2]])
+    g = cur.fetchone()
+    if not cur.rowcount:
+        a = -3.47
+        b = -0.0594
+    else:
+        a = g[0]
+        b = g[1]
     cur.execute("select location_id from SystemLocation where pvsystem_id = %s", [system_id])
     loc_id = cur.fetchone()
     # cur.execute("select a,b from GlazingCoeff where id = %s and mount = %s", [result[1], result[2]])
@@ -403,7 +468,7 @@ def PE(request, system_id):
         # Calculate the Predicted Power values using the predicted power at target conditions
         Ppredvals[i] = float(result[0]) * (Gvals[i] / Gtrc) * CFtcell
         # Convert the predicted power to energy in MWh
-        Ppredvals[i] = (Ppredvals[i] * daysCount[i] * 24) / 1000
+        Ppredvals[i] = (Ppredvals[i] * daysCount[i] * 8) / 1000
         Ppredvals[i] = round(Ppredvals[i], 3)
     p_list = (system_id, Ppredvals[0], Ppredvals[1], Ppredvals[2], Ppredvals[3], Ppredvals[4], Ppredvals[5],
               Ppredvals[6], Ppredvals[7], Ppredvals[8], Ppredvals[9], Ppredvals[10], Ppredvals[11], 'PE')
@@ -432,9 +497,22 @@ def PE(request, system_id):
 def EditView(request):
 
     result1 = {}
+    userid = request.session.get('userid')
+    con = pymysql.connect(host='ift540.cyhc1qzz7e7u.us-west-2.rds.amazonaws.com',
+                          port=3306,
+                          user='IFT540PSP',
+                          password='IFT540PSP',
+                          db='pvsystem')
+
+    cur = con.cursor()
+    cur.execute("select user_role from User where user_id = %s", [userid])
+    result = cur.fetchone()
 
     if request.method == "GET":
-        return render(request, 'editprofile.html', result1)
+        if result[0] == "Lab":
+            return render(request, 'LabEditProfile.html', result1)
+        else:
+            return render(request, 'editprofile.html', result1)
 
 def EditProfile(request):
 
@@ -456,7 +534,7 @@ def EditProfile(request):
                       " addr_line2 = %s, city = %s, state = %s, zip = %s, password = %s where user_id = %s")
         edit_list = [fname, lname, email, phone, address1, address2, city, state, zip, psw]
         edit_list = list(edit_list)
-        result1 = {'key': edit_list}
+        e = edit_list
         edit_list.append(userid)
         edit_list = tuple(edit_list)
         con = pymysql.connect(host='ift540.cyhc1qzz7e7u.us-west-2.rds.amazonaws.com',
@@ -468,7 +546,13 @@ def EditProfile(request):
         cur = con.cursor()
         cur.execute(edit_user, edit_list)
         con.commit()
-    return render(request, 'editprofile.html', result1)
+        result1 = {'key': e}
+        cur.execute("select user_role from User where user_id = %s", [userid])
+        result = cur.fetchone()
+        if result[0] == "Lab":
+            return render(request, 'LabEditProfile.html', result1)
+        else:
+            return render(request, 'editprofile.html', result1)
 
 
 def InsertView(request):
@@ -482,7 +566,6 @@ def InsertView(request):
 def InsertPVView(request):
 
     result1 = {}
-
     if request.method == "POST":
         power = request.POST.get('powerrating')
         module = request.POST.get('moduletype')
@@ -518,13 +601,16 @@ def InsertPVView(request):
 
 
 def UploadXML(request):
+
     return render(request, 'UploadXMLtoDB.html')
 
 def ProvideAccess(request):
+
     if request.method == "GET":
         return render(request, 'ProvideAccess.html')
 
 def UploadXMLtoDB(request):
+
     if request.method == "POST":
         fileName = request.FILES['Selectfile']
         tree = ET.parse(fileName)
@@ -557,6 +643,7 @@ def UploadXMLtoDB(request):
 
 
 def DownloadResults(request, system_id):
+
     con = pymysql.connect(host='ift540.cyhc1qzz7e7u.us-west-2.rds.amazonaws.com',
                           port=3306,
                           user='IFT540PSP',
@@ -579,6 +666,7 @@ def DownloadResults(request, system_id):
     loc = str(l1[0])
     vals1 = [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ']
     vals2 = [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ']
+    vals3 = [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ']
     for i in range(1, 13):
         vals1[i - 1] = res1[i]
         vals2[i - 1] = res2[i]
@@ -606,6 +694,21 @@ def DownloadResults(request, system_id):
         expected.append(month)
     year.append(expected)
     year.append(predicted)
+    cur.execute("select system_id, jan, feb, mar, apr, may, jun, jul, "
+                "aug, sep, oct, nov, dece, etype from Results1 where system_id = %s and etype = %s", [system_id, 'AE'])
+    res3 = cur.fetchone()
+    if cur.rowcount:
+        for i in range(1, 13):
+            vals3[i - 1] = res3[i]
+        measured = etree.Element('MeasuredEnergy')
+        for i in range(0, 12):
+            month = etree.Element('Month')
+            month.set('Name', monthNames[i])
+            energy = etree.Element('Energy')
+            energy.text = vals3[i]
+            month.append(energy)
+            measured.append(month)
+        year.append(measured)
     system.append(year)
     root.append(system)
     filename = "results.xml"
@@ -619,6 +722,80 @@ def DownloadResults(request, system_id):
     return response
     #return render(request, 'SystemOwnerHome.html')
 
+def LabView(request):
+    con = pymysql.connect(host='ift540.cyhc1qzz7e7u.us-west-2.rds.amazonaws.com',
+                          port=3306,
+                          user='IFT540PSP',
+                          password='IFT540PSP',
+                          db='pvsystem')
+
+    cur = con.cursor()
+    cur.execute("select distinct PvSystem_id from PvSystem")
+    result = cur.fetchall()
+    list1 = []
+    for row in result:
+        # date_dict = { i:row }
+        list1.append(row)
+
+    date_dict = {"key": list1}
+
+    return render(request, 'LabHomePage.html', date_dict)
+
+def UploadResultCSV(request, system_id):
+    request.session['systemid'] = system_id
+    con = pymysql.connect(host='ift540.cyhc1qzz7e7u.us-west-2.rds.amazonaws.com',
+                          port=3306,
+                          user='IFT540PSP',
+                          password='IFT540PSP',
+                          db='pvsystem')
+    
+    cur = con.cursor()
+    if (cur.execute("select * from Results1 where system_id = %s and etype = %s", [system_id, 'AE']) > 0):
+        result = {'key':1}
+    else:
+        result = {}
+        
+    return render(request,'UploadResultCSV.html',result)
+        
+def ActualE(request):
+
+    actualEnergyArr = []
+    if request.method == "POST":
+        csv_file = request.FILES["csv_file"]
+        file_data=csv_file.read()
+        lines = file_data.splitlines()
+        
+        for line in lines:
+            fields = line.decode().split(",")
+            actualEnergyArr.append(fields[1])
+            
+    con = pymysql.connect(host='ift540.cyhc1qzz7e7u.us-west-2.rds.amazonaws.com',
+                          port=3306,
+                          user='IFT540PSP',
+                          password='IFT540PSP',
+                          db='pvsystem')
+    cur = con.cursor()
+    systemid = request.session.get('systemid')
+
+    e_list = (systemid, actualEnergyArr[0], actualEnergyArr[1], actualEnergyArr[2], actualEnergyArr[3], actualEnergyArr[4],
+              actualEnergyArr[5], actualEnergyArr[6], actualEnergyArr[7], actualEnergyArr[8], actualEnergyArr[9], actualEnergyArr[10],
+              actualEnergyArr[11], 'AE')
+    if (cur.execute("select * from Results1 where system_id = %s and etype = %s", [systemid, 'AE']) > 0):
+        add_energy = ("Update Results1 set system_id = %s, jan = %s, feb = %s, mar = %s, apr = %s,"
+                          " may = %s, jun = %s, jul = %s, aug = %s, sep = %s, oct = %s, nov = %s, dece = %s, etype = %s "
+                          "where system_id = %s and etype = %s")
+        e_list = list(e_list)
+        e_list.append(systemid)
+        e_list.append('AE')
+        e_list = tuple(e_list)
+    else:
+        add_energy = ("INSERT INTO Results1 (system_id, jan, feb, mar, apr,"
+                  " may, jun, jul, aug, sep, oct, nov, dece, etype)"
+                  "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)")
+
+    cur.execute(add_energy, e_list)
+    con.commit()
+    return LabView(request)    
 
 def Logout(request):
     del request.session['userid']
